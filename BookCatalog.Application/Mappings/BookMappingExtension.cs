@@ -45,9 +45,7 @@ namespace BookCatalog.Application.Mappings
             return dtos.Select(d => d.ToEntity());
         }
 
-        /// <summary>
-        /// Map back from BookDto to Book entity. BookDto does not carry AuthorID, so caller must supply it.
-        /// </summary>
+   
         public static Book ToEntity(this BookDto dto, int authorId)
         {
             if (dto is null) throw new ArgumentNullException(nameof(dto));
@@ -60,10 +58,6 @@ namespace BookCatalog.Application.Mappings
                 PublicationYear = dto.PublicationYear
             };
         }
-
-        /// <summary>
-        /// Map many BookDto -> Book using a selector that provides AuthorID for each DTO.
-        /// </summary>
         public static IEnumerable<Book> ToEntities(this IEnumerable<BookDto>? dtos, Func<BookDto, int> authorIdSelector)
         {
             if (dtos is null) return Enumerable.Empty<Book>();
@@ -72,14 +66,5 @@ namespace BookCatalog.Application.Mappings
             return dtos.Select(dto => dto.ToEntity(authorIdSelector(dto)));
         }
 
-        public static void UpdateFrom(this Book book, CreateBookDto dto)
-        {
-            if (book is null) throw new ArgumentNullException(nameof(book));
-            if (dto is null) throw new ArgumentNullException(nameof(dto));
-
-            book.Title = dto.Title;
-            book.AuthorID = dto.AuthorID;
-            book.PublicationYear = dto.PublicationYear;
-        }
     }
 }

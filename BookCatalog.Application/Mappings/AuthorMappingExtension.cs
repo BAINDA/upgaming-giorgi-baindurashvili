@@ -52,20 +52,6 @@ namespace BookCatalog.Application.Mappings
             return dtos.Select(d => d.ToEntity());
         }
 
-        public static void UpdateFrom(this Author author, CreateAuthorDto dto)
-        {
-            if (author is null) throw new ArgumentNullException(nameof(author));
-            if (dto is null) throw new ArgumentNullException(nameof(dto));
-
-            author.Name = dto.Name;
-        }
-
-        public static void UpdateFrom(this Author author, AuthorDto dto)
-        {
-            if (author is null) throw new ArgumentNullException(nameof(author));
-            if (dto is null) throw new ArgumentNullException(nameof(dto));
-
-            author.Name = dto.Name;
-        }
+    
     }
 }
