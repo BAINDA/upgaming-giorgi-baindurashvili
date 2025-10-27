@@ -16,9 +16,9 @@ namespace BookCatalog.Application.Services.Implementations
             this._bookRepository = bookRepository;
             this._authorService = authorService;
         }
-        public async Task<ApiResponse<IEnumerable<BookDto>>> GetAllBooksAsync()
+        public async Task<ApiResponse<IEnumerable<BookDto>>> GetBooksAsync(BookFilterParams filterParams)
         {
-            var books = await _bookRepository.GetAllBooksWithAuthorAsync();
+            var books = await _bookRepository.GetBooksAsync(filterParams);
 
             if (books.Any() == false)
             { 

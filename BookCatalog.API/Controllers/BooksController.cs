@@ -19,9 +19,9 @@ namespace BookCatalog.API.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<ApiResponse<IEnumerable<BookDto>>>> GetAll()
+        public async Task<ActionResult<ApiResponse<IEnumerable<BookDto>>>> GetAll([FromQuery] BookFilterParams bookFilterParams)
         {
-            var response = await _bookService.GetAllBooksAsync();
+            var response = await _bookService.GetBooksAsync(bookFilterParams);
             return StatusCode(response.StatusCode, response);
         }
 

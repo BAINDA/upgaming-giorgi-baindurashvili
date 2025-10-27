@@ -6,7 +6,7 @@ namespace BookCatalog.Application.Services.Interfaces;
 
 public interface IBookService
 {
-    Task<ApiResponse<IEnumerable<BookDto>>> GetAllBooksAsync();
+    Task<ApiResponse<IEnumerable<BookDto>>> GetBooksAsync(BookFilterParams filterParams);
     Task<ApiResponse<IEnumerable<BookDto>>> GetBooksByAuthorAsync(int authorId);
     Task<ApiResponse<BookDto?>> GetBookByIdAsync(int id);
     Task<ApiResponse<BookDto>> CreateBookAsync(CreateBookDto createBookDto);

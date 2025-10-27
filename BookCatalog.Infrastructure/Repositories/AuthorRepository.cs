@@ -39,14 +39,12 @@ public class AuthorRepository : IAuthorRepository
 
     }
 
-        public async Task<bool> DeleteAuthorAsync(int authorId)
+        public async Task DeleteAuthorAsync(int authorId)
         {
          
           var author = await _context.Authors.FindAsync(authorId);
           
           _context.Authors.Remove(author);
-
-           return true;
 
     }
         public async Task<bool> SaveChangesAsync()

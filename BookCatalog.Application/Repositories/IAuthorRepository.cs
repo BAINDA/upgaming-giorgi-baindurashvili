@@ -9,7 +9,7 @@ namespace BookCatalog.Application.Repositories
         Task<Author?> GetAuthorByIdAsync(int authorId);
         Task<Author> AddAuthorAsync(Author author);
         void UpdateAuthorAsync(Author author);
-        Task<bool> DeleteAuthorAsync(int authorId);
+        Task DeleteAuthorAsync(int authorId);
         Task<bool> AuthorExistsById(int authorId);
         Task<bool> AuthorExistsByName(string authorName);
         Task<bool> SaveChangesAsync();
