@@ -9,6 +9,6 @@ namespace BookCatalog.Domain.Entities;
 
 public class BaseEntity 
 {
- [Key] public int ID { get; set; }
+ [Key] public int Id { get; set; }
   
 }

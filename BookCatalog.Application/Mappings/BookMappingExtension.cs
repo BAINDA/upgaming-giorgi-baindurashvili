@@ -14,7 +14,7 @@ namespace BookCatalog.Application.Mappings
 
             return new BookDto
             {
-                ID = book.ID,
+                ID = book.Id,
                 Title = book.Title ?? string.Empty,
                 AuthorName = book.Author?.Name ?? string.Empty,
                 PublicationYear = book.PublicationYear
@@ -54,7 +54,7 @@ namespace BookCatalog.Application.Mappings
 
             return new Book
             {
-                ID = dto.ID,
+                Id = dto.ID,
                 Title = dto.Title,
                 AuthorID = authorId,
                 PublicationYear = dto.PublicationYear

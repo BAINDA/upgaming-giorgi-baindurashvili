@@ -3,7 +3,6 @@ using BookCatalog.Application.DTOs;
 using BookCatalog.Application.Mappings;
 using BookCatalog.Application.Repositories;
 using BookCatalog.Application.Services.Interfaces;
-using BookCatalog.Domain.Entities;
 
 namespace BookCatalog.Application.Services.Implementations
 {
@@ -98,12 +97,16 @@ namespace BookCatalog.Application.Services.Implementations
             }
 
             var book = createBookDto.ToEntity();
+
             await _bookRepository.AddBookAsync(book);
+
             if (await _bookRepository.SaveChangesAsync() is false)
             {
                 return ApiResponse<BookDto>.Fail("Failed to create book", 500, "An error occurred while creating the book");
             }
             var bookDto = book.ToDto();
+            bookDto.AuthorName = author.Data!.Name;
+
             return ApiResponse<BookDto>.Success(bookDto, 201, "Book created successfully");
 
 
@@ -141,9 +144,9 @@ namespace BookCatalog.Application.Services.Implementations
 
                book.Title = updateBookDto.Title;
                book.PublicationYear = updateBookDto.PublicationYear;
-              var updateResult = await _bookRepository.UpdateBookAsync(book);
+              _bookRepository.UpdateBookAsync(book);
 
-            if(updateResult is false || await _bookRepository.SaveChangesAsync() is false)
+            if(await _bookRepository.SaveChangesAsync() is false)
             {
                 return ApiResponse<bool>.Fail("Failed to update book",500,"An error occurred while updating the book");
             }
@@ -165,8 +168,8 @@ namespace BookCatalog.Application.Services.Implementations
                 return ApiResponse<bool>.Fail("Book not found", 404, $"Book with id {id} not found");
             }
 
-            var deleteResult = await _bookRepository.DeleteBookAsync(id);
-            if (deleteResult is false || await _bookRepository.SaveChangesAsync() is false)
+            await _bookRepository.DeleteBookAsync(id);
+            if (await _bookRepository.SaveChangesAsync() is false)
             {
                 return ApiResponse<bool>.Fail("Failed to delete book", 500, "An error occurred while deleting the book");
             }

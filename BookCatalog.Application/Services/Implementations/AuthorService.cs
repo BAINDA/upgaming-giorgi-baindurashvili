@@ -61,11 +61,18 @@ public class AuthorService : IAuthorService
             return ApiResponse<AuthorDto>.Fail("Author data is null",400,"Cannot create author with null data");
         }
 
-         var author = createAuthorDto.ToEntity();
+        var authorExists = await _authorRepository.AuthorExistsByName(createAuthorDto.Name);
 
-          await _authorRepository.AddAuthorAsync(author);
-         
-        if(await _authorRepository.SaveChangesAsync() == false)
+        if(authorExists is true)
+        {
+            return ApiResponse<AuthorDto>.Fail($"Author with name {createAuthorDto.Name} already exists",409,$"Cannot create duplicate author with name {createAuthorDto.Name}");
+        }
+
+        var author = createAuthorDto.ToEntity();
+        await _authorRepository.AddAuthorAsync(author);
+
+
+        if (await _authorRepository.SaveChangesAsync() == false)
         {
             return ApiResponse<AuthorDto>.Fail("Failed to create author",500,"An error occurred while creating the author");
         }
@@ -93,7 +100,7 @@ public class AuthorService : IAuthorService
         }
 
         authorToUpdate.Name = authorDto.Name;
-        await _authorRepository.UpdateAuthorAsync(authorToUpdate);
+       _authorRepository.UpdateAuthorAsync(authorToUpdate);
 
         if(await _authorRepository.SaveChangesAsync() is false)
         {
@@ -112,7 +119,7 @@ public class AuthorService : IAuthorService
             return ApiResponse<bool>.Fail("Invalid author id", 400, $"Author id {authorId} is invalid");
         }
 
-       var authorExists = await _authorRepository.AuthorExistsAsync(authorId);
+       var authorExists = await _authorRepository.AuthorExistsById(authorId);
 
        if(authorExists is false)
         {

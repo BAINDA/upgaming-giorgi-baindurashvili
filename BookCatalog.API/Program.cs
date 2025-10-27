@@ -1,22 +1,49 @@
+using BookCatalog.Application.Common;
 using BookCatalog.Application.Repositories;
 using BookCatalog.Application.Services.Implementations;
 using BookCatalog.Application.Services.Interfaces;
+using BookCatalog.Infrastructure.Data;
+using BookCatalog.Infrastructure.Repositories;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddControllers();
+
+// Controllers + global model-state -> ApiResponse handling
+builder.Services.AddControllers()
+    .ConfigureApiBehaviorOptions(options =>
+    {
+        options.InvalidModelStateResponseFactory = context =>
+        {
+            var errors = context.ModelState.Values
+                .SelectMany(v => v.Errors)
+                .Select(e => e.ErrorMessage ?? e.Exception?.Message ?? string.Empty)
+                .Where(s => !string.IsNullOrEmpty(s))
+                .ToList();
+
+            var apiResponse = ApiResponse<string>.Fail(errors, 400, "Validation failed.");
+            return new BadRequestObjectResult(apiResponse);
+        };
+    });
+
+// InMemory DbContext
+builder.Services.AddDbContext<ApplicationDbContext>(options =>
+    options.UseInMemoryDatabase("BookCatalogDb"));
 
 // swagger
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 // DI registrations
+builder.Services.AddScoped<IAuthorRepository, AuthorRepository>();
+builder.Services.AddScoped<IBookRepository, BookRepository>();
 builder.Services.AddScoped<IAuthorService, AuthorService>();
 builder.Services.AddScoped<IBookService, BookService>();
 
 var app = builder.Build();
 
-// enable swagger UI in Development (or always if you want)
+
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();

@@ -8,9 +8,10 @@ namespace BookCatalog.Application.Repositories
         Task<IEnumerable<Author>> GetAllAuthorsAsync();
         Task<Author?> GetAuthorByIdAsync(int authorId);
         Task<Author> AddAuthorAsync(Author author);
-        Task<bool> UpdateAuthorAsync(Author author);
+        void UpdateAuthorAsync(Author author);
         Task<bool> DeleteAuthorAsync(int authorId);
-        Task<bool> AuthorExistsAsync(int authorId);
+        Task<bool> AuthorExistsById(int authorId);
+        Task<bool> AuthorExistsByName(string authorName);
         Task<bool> SaveChangesAsync();
 
 

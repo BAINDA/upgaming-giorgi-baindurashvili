@@ -4,7 +4,7 @@ namespace BookCatalog.Application.DTOs
 {
     public class CreateBookDto
     {
-        [Required(ErrorMessage = "Title is required.")]
+        [Required(ErrorMessage = "Title is required, it cannot be empty or null.")]
         public string Title { get; set; }
 
         [Required(ErrorMessage = "AuthorID is required.")]

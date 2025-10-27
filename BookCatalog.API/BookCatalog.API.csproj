@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
@@ -13,5 +13,9 @@
   <ItemGroup>
     <ProjectReference Include="..\BookCatalog.Infrastructure\BookCatalog.Infrastructure.csproj" />
   </ItemGroup>
+
+	<ItemGroup>
+		<PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="6.*" />
+	</ItemGroup>
 
 </Project>

@@ -1,0 +1,58 @@
+﻿using BookCatalog.Application.Common;
+using BookCatalog.Application.DTOs;
+using BookCatalog.Application.Services.Interfaces;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+
+namespace BookCatalog.API.Controllers
+{
+    [Route("api/[controller]")]
+    [ApiController]
+    [AllowAnonymous]
+    public class AuthorController : ControllerBase
+    {
+        private readonly IAuthorService _authorService;
+
+        public AuthorController(IAuthorService authorService) => _authorService = authorService;
+
+        [HttpGet]
+        public async Task<ActionResult<ApiResponse<IEnumerable<AuthorDto>>>> GetAll()
+        {
+            var response = await _authorService.GetAllAuthorsAsync();
+            return StatusCode(response.StatusCode, response);
+        }
+
+        [HttpGet("{id:int}")]
+        public async Task<ActionResult<ApiResponse<AuthorDto?>>> GetById(int id)
+        {
+            var response = await _authorService.GetAuthorByIdAsync(id);
+            return StatusCode(response.StatusCode, response);
+        }
+
+        [HttpPost]
+        public async Task<ActionResult<ApiResponse<AuthorDto>>> Create([FromBody] CreateAuthorDto dto)
+        {
+            // model-state validation is handled globally via ConfigureApiBehaviorOptions
+            var response = await _authorService.CreateAuthorAsync(dto);
+            return StatusCode(response.StatusCode, response);
+        }
+
+        [HttpPut("{id:int}")]
+        public async Task<ActionResult<ApiResponse<bool>>> Update(int id, [FromBody] AuthorDto dto)
+        {
+            // keep route/payload id consistency check here
+            if (id != dto.Id)
+                return BadRequest(ApiResponse<bool>.Fail("Id mismatch", 400, "Route id does not match payload id"));
+
+            var response = await _authorService.UpdateAuthorAsync(dto);
+            return StatusCode(response.StatusCode, response);
+        }
+
+        [HttpDelete("{id:int}")]
+        public async Task<ActionResult<ApiResponse<bool>>> Delete(int id)
+        {
+            var response = await _authorService.DeleteAuthorAsync(id);
+            return StatusCode(response.StatusCode, response);
+        }
+    }
+}

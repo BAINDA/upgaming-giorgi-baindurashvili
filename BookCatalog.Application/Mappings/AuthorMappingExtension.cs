@@ -14,7 +14,7 @@ namespace BookCatalog.Application.Mappings
 
             return new AuthorDto
             {
-                Id = author.ID,
+                Id = author.Id,
                 Name = author.Name ?? string.Empty
             };
         }
@@ -41,7 +41,7 @@ namespace BookCatalog.Application.Mappings
 
             return new Author
             {
-                ID = dto.Id,
+                Id = dto.Id,
                 Name = dto.Name
             };
         }
