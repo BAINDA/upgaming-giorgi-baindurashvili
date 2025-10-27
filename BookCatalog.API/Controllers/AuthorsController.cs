@@ -9,11 +9,11 @@ namespace BookCatalog.API.Controllers
     [Route("api/[controller]")]
     [ApiController]
     [AllowAnonymous]
-    public class AuthorController : ControllerBase
+    public class AuthorsController : ControllerBase
     {
         private readonly IAuthorService _authorService;
 
-        public AuthorController(IAuthorService authorService) => _authorService = authorService;
+        public AuthorsController(IAuthorService authorService) => _authorService = authorService;
 
         [HttpGet]
         public async Task<ActionResult<ApiResponse<IEnumerable<AuthorDto>>>> GetAll()

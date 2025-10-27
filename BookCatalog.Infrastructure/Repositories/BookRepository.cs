@@ -27,7 +27,7 @@ namespace BookCatalog.Infrastructure.Repositories
         public async Task<bool> BookExistsAsync(string bookTitle)
         {
             
-            return await _context.Books.AnyAsync(b => b.Title == bookTitle);
+            return await _context.Books.AnyAsync(b => b.Title.ToLower() == bookTitle.ToLower());
         }
 
         public async Task DeleteBookAsync(int id)

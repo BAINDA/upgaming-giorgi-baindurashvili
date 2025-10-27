@@ -61,6 +61,6 @@ public class AuthorRepository : IAuthorRepository
 
     public async Task<bool> AuthorExistsByName(string authorName)
     {
-       return await _context.Authors.AnyAsync(a => a.Name == authorName);
+       return await _context.Authors.AnyAsync(a => a.Name.ToLower() == authorName.ToLower());
     }
 }

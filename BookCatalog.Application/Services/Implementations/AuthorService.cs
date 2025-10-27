@@ -61,6 +61,11 @@ public class AuthorService : IAuthorService
             return ApiResponse<AuthorDto>.Fail("Author data is null",400,"Cannot create author with null data");
         }
 
+        if (string.IsNullOrWhiteSpace(createAuthorDto.Name))
+        {
+            return ApiResponse<AuthorDto>.Fail("Author name cannot be empty.", 400, "Author name cannot be empty or consist only of whitespace.");
+        }
+
         var authorExists = await _authorRepository.AuthorExistsByName(createAuthorDto.Name);
 
         if(authorExists is true)
@@ -88,25 +93,35 @@ public class AuthorService : IAuthorService
             return ApiResponse<bool>.Fail("Invalid author id", 400, $"Author id {authorDto.Id} is invalid");
         }
 
-        var authorToUpdate = await _authorRepository.GetAuthorByIdAsync(authorDto.Id);
+        
+        var cleanedAuthorName = authorDto.Name.Trim();
 
-        if (authorToUpdate is null)
+        if(string.IsNullOrWhiteSpace(cleanedAuthorName))
         {
-            {
-                return ApiResponse<bool>.Fail("Author not found", 404, $"Author with id {authorDto.Id} not found");
-
-            }
-
+            return ApiResponse<bool>.Fail("Author name cannot be empty.", 400, "Author name cannot be empty or consist only of whitespace.");
         }
 
-        authorToUpdate.Name = authorDto.Name;
-       _authorRepository.UpdateAuthorAsync(authorToUpdate);
 
-        if(await _authorRepository.SaveChangesAsync() is false)
+        var authorExists = await _authorRepository.AuthorExistsByName(authorDto.Name);
+
+        if(authorExists is true)
+        {
+            return ApiResponse<bool>.Fail($"Author with name {authorDto.Name} already exists",409,$"Cannot update to duplicate author with name {authorDto.Name}");
+        }
+
+        var authorToUpdate = await _authorRepository.GetAuthorByIdAsync(authorDto.Id);
+
+        if(authorToUpdate is null)
+        {
+            return ApiResponse<bool>.Fail("Author not found", 404, $"Author with id {authorDto.Id} not found");
+        }
+         
+        authorToUpdate.Name = cleanedAuthorName;
+        _authorRepository.UpdateAuthorAsync(authorToUpdate);
+        if (await _authorRepository.SaveChangesAsync() is false)
         {
             return ApiResponse<bool>.Fail("Failed to update author", 500, "An error occurred while updating the author");
         }
-       
         return ApiResponse<bool>.Success(true, 200, "Author updated successfully");
 
     }

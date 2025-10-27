@@ -9,11 +9,11 @@ namespace BookCatalog.API.Controllers
     [Route("api/[controller]")]
     [ApiController]
     [AllowAnonymous]
-    public class BookController : ControllerBase
+    public class BooksController : ControllerBase
     {
         private readonly IBookService _bookService;
 
-        public BookController(IBookService bookService)
+        public BooksController(IBookService bookService)
         {
             this._bookService = bookService;
         }
