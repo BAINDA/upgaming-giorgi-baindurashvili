@@ -1,11 +1,8 @@
-﻿using System;
-using System.Linq;
-using BookCatalog.Application.DTOs;
+﻿using BookCatalog.Application.DTOs;
 using BookCatalog.Application.Repositories;
 using BookCatalog.Domain.Entities;
 using BookCatalog.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
-using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace BookCatalog.Infrastructure.Repositories
 {

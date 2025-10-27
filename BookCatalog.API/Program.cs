@@ -10,7 +10,8 @@ using Microsoft.EntityFrameworkCore;
 var builder = WebApplication.CreateBuilder(args);
 
 
-// Controllers + global model-state -> ApiResponse handling
+// Add controllers with global model validation error handling and wrapping into ApiResponse for consistency
+
 builder.Services.AddControllers()
     .ConfigureApiBehaviorOptions(options =>
     {
@@ -27,21 +28,24 @@ builder.Services.AddControllers()
         };
     });
 
-// InMemory DbContext
+// adding in memory database
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseInMemoryDatabase("BookCatalogDb"));
 
-// swagger
+// adding swagger for API documentation and testing endpoints
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-// DI registrations
+// Dependency Injection for repositories and services
 builder.Services.AddScoped<IAuthorRepository, AuthorRepository>();
 builder.Services.AddScoped<IBookRepository, BookRepository>();
 builder.Services.AddScoped<IAuthorService, AuthorService>();
 builder.Services.AddScoped<IBookService, BookService>();
 
 var app = builder.Build();
+
+
+// initialize and seed the database
 
 using (var scope = app.Services.CreateScope())
 {

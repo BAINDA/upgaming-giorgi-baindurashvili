@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using BookCatalog.Application.DTOs;
+﻿using BookCatalog.Application.DTOs;
 using BookCatalog.Domain.Entities;
 
 namespace BookCatalog.Application.Mappings

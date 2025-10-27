@@ -32,7 +32,7 @@ namespace BookCatalog.API.Controllers
         [HttpPost]
         public async Task<ActionResult<ApiResponse<AuthorDto>>> Create([FromBody] CreateAuthorDto dto)
         {
-            // model-state validation is handled globally via ConfigureApiBehaviorOptions
+            // Model validations are handled globally via configureApiBehaviorOptions and wrapped into ApiResponse if it fails
             var response = await _authorService.CreateAuthorAsync(dto);
             return StatusCode(response.StatusCode, response);
         }
@@ -40,7 +40,7 @@ namespace BookCatalog.API.Controllers
         [HttpPut("{id:int}")]
         public async Task<ActionResult<ApiResponse<bool>>> Update(int id, [FromBody] AuthorDto dto)
         {
-            // keep route/payload id consistency check here
+            // this check ensures that route and payload ids are consistent
             if (id != dto.Id)
                 return BadRequest(ApiResponse<bool>.Fail("Id mismatch", 400, "Route id does not match payload id"));
 

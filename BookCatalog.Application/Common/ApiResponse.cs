@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace BookCatalog.Application.Common
+﻿namespace BookCatalog.Application.Common
 {
     public class ApiResponse<T>
     {
