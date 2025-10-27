@@ -1,4 +1,5 @@
-﻿using BookCatalog.Domain.Entities;
+﻿using System.Reflection.Emit;
+using BookCatalog.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 
 namespace BookCatalog.Infrastructure.Data
@@ -12,6 +13,8 @@ namespace BookCatalog.Infrastructure.Data
 
         public DbSet<Book> Books { get; set; } = null!;
         public DbSet<Author> Authors { get; set; } = null!;
+
+  
 
 
     }
